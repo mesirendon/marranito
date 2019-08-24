@@ -30,7 +30,7 @@ contract('Marranito', accounts => {
     });
   });
   describe('Operations', () => {
-    it('should get transfers from other accounts implicitly', () => {
+    it('should get transferOwnerships from other accounts implicitly', () => {
       return web3.eth.sendTransaction({
         from: unauthorized,
         value: web3.utils.toWei('1'),
@@ -40,7 +40,7 @@ contract('Marranito', accounts => {
           expect(response.transactionHash).to.match(/0x[a-f0-9]{64}/);
         });
     });
-    it('should get transfers from other accounts explicitly', () => {
+    it('should get transferOwnerships from other accounts explicitly', () => {
       return marranito.feedMe({from: userA, value: web3.utils.toWei('1')})
         .then(response => {
           expect(response.tx).to.match(/0x[a-f0-9]{64}/);
@@ -51,8 +51,8 @@ contract('Marranito', accounts => {
         expect(response).to.be.true;
       });
     });
-    it('should allow the owner to transfer the ownership to a new owner', () => {
-      return marranito.transfer(userA, {from: owner})
+    it('should allow the owner to transferOwnership the ownership to a new owner', () => {
+      return marranito.transferOwnership(userA, {from: owner})
         .then(response => {
           expect(response.tx).to.match(/0x[a-f0-9]{64}/);
         });
@@ -68,7 +68,7 @@ contract('Marranito', accounts => {
       });
     });
     it('should not allow not owner to seize the contract', () => {
-      return expect(marranito.transfer(owner, {from: owner}))
+      return expect(marranito.transferOwnership(owner, {from: owner}))
         .to.be.eventually.rejected;
     });
   });
